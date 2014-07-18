@@ -1,0 +1,46 @@
+{
+  "name": "jello",
+  "version": "0.0.13",
+  "description": "Front End Integrated Solution for J2EE Velocity.",
+  "main": "jello.js",
+  "bin": {
+    "fis-velocity": "bin/jello",
+    "jello": "bin/jello"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2betop/fis-velocity.git"
+  },
+  "keywords": [
+    "fis",
+    "velocity"
+  ],
+  "author": {
+    "name": "2betop"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2betop/fis-velocity/issues"
+  },
+  "homepage": "https://github.com/2betop/fis-velocity",
+  "dependencies": {
+    "fis": "~1.7.8",
+    "fis-parser-po": "0.0.1",
+    "fis-parser-less": "0.0.9",
+    "jello-preprocessor-extlang": "0.0.2",
+    "jello-postprocessor-require-async": "0.0.1",
+    "fis-parser-sass": "0.1.2",
+    "fis-parser-bdtmpl": "0.0.3",
+    "fis-postprocessor-jswrapper": "0.0.8",
+    "jello-command-server": "0.0.8"
+  },
+  "readme": "jello ['dʒeləu]\n============================\n\n针对服务端为 JAVA + Velocity 的前端集成解决方案。\n\n为优化前端开发而生，提供前后端开发分离、自动性能优化、模块化开发机制等功能。\n\n## 目录\n* [前后端分离](#前后端分离)\n* [自动性能优化](#自动性能优化)\n* [模板继承机制](#模板继承机制)\n* [模块化开发](#模块化开发)\n* [简化环境安装](#简化环境安装)\n* [如何使用](#如何使用)\n  * [安装](#安装)\n  * [快速上手](#快速上手)\n  * [jello 命令](#jello 命令)\n  * [模板继承](#模板继承)\n  * [模板数据绑定](#模板继承)\n  * [页面模拟](#页面模拟)\n  * [插件说明](#插件说明)\n  * [配置](#配置)\n  * [更多资料](#更多资料)\n\n## 前后端分离\n\n基于 velocity 模板引擎实现前后端分离，让前端攻城师更专注于 JS、CSS、VM(velocity 模板文件) 文件编写。\n我们提供一种简单的机制，模拟线上环境，让你轻松的预览线上效果。\n\n比如：创建一个 vm velocity 模板文件后，基于我们的工具，你可以直接预览此模板文件的内容，\n在相应的目录创建一个同名 json 文件，按与后端开发人员约定好的数据格式，\n在此 json 文件中添加测试数据便能自动与模板变量绑定上。\n\n使用此机制可以让前端开发流程与后端开发完全分离，后端开发人员只需关心渲染哪个模板文件和添加相应的模板数据。\n\n## 自动性能优化\n\n我们基于 [velocity](http://velocity.apache.org) 开发了些扩展标签 (directive)，如：html、head、body、script、style、widget...\n如果你采用我们提供的标签 (directive) 组织代码，无论按什么顺序组织，我们可以保证所有 css 内容集中在头部输出，所有的 js 集中在底部输出，以达到一个性能优化的效果。\n\n另外结合自动打包配置，可以让多个 js/css 资源合并成一个文件，更大程度的优化性能。\n\n## 模板继承机制\n扩展 velocity 实现类 smarty 的模板继承功能，让模板能够得到更充分的复用。\n\n将多个页面间相同的部分提取到一个 layout.vm 文件里面，每个页面只需填充自己独有的内容。\n\n更多细节查看[模板继承](#模板继承)。\n\n## 模块化开发\n提供 html、css、js 模块化机制，包括 widget 组件化与 js amd 加载机制，让内容更好的拆分与复用。\n\n## 简化环境安装\n\n内嵌 j2ee 开发服务器，你无需再折腾 j2ee 环境搭建。直接通过 `jello server start` 就能开起服务，预览页面。\n\n## 如何使用\n\n### 安装\n* 安装 [nodejs&npm](http://nodejs.org/)\n* 安装 [java](http://java.com/zh_CN/)\n* 安装jello & lights\n\n   ```bash\n    npm install lights -g\n    npm install jello -g\n    jello -v\n   ```\n\n### 快速上手\n* 下载 [jello-demo](http://lightjs.duapp.com/)\n\n    ```bash\n     lights install jello-demo\n    ```\n* 编译预览\n\n    ```bash\n     cd jello-demo\n     jello release\n     jello server start\n    ```\n* 预览： localhost:8080/example/page/index\n\n### jello 命令\n> 三条命令满足所有开发需求\n\n```bash\n     jello --help\n\n     Usage: jello <command>\n\n     Commands:\n\n        release     build and deploy your project\n        install     install components and demos\n        server      launch a embeded tomcat server\n\n     Options:\n\n        -h, --help     output usage information\n        -v, --version  output the version number\n        --no-color     disable colored output\n```\n\n* 具体命令使用请参考 [fis-plus](http://fis.baidu.com/)\n\n### 模板继承\n\n提供类似 smarty 的模板集成机制, 被继承的模板中的所有 block 标签都可以被覆盖。\n\n1. layout.vm\n\n  ```velocity\n  <!DOCTYPE html>\n    #html(\"example:static/js/mod.js\")\n\n    #head()\n      <meta charset=\"utf-8\"/>\n      <meta content=\"\" name=\"description\">\n      <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n      <title>Demo</title>\n      #require(\"example:static/css/bootstrap.css\")\n      #require(\"example:static/css/bootstrap-theme.css\")\n      #require(\"example:static/js/jquery-1.10.2.js\")\n      #require(\"example:static/js/bootstrap.js\")\n    #end ## end head\n\n  #body()\n  <div id=\"wrapper\">\n    #block(\"body_content\")\n        This is body.\n    #end\n  </div>\n  #end ## end body\n\n  #require(\"example:page/layout.vm\")\n  #end ## end html\n  ```\n2. index.vm\n\n  ```velocity\n  #extends(\"layout.vm\")\n\n  #block(\"body_content\")\n  <h1>Hello Demo</h1>\n\n      #widget(\"example:widget/header/header.vm\")\n\n      #script()\n      // var widgetA = require(\"example:widget/widgetA/widgetA.js\");\n\n      require.async(\"example:widget/widgetB/widgetB.js\", function(api) {\n      api.sayHelloWorld();\n      });\n      #end ## end script\n  #end ## end block\n\n  #require(\"example:page/index.vm\")\n  #end\n  ```\n\n\n\n### 模板数据绑定\n\n每个 page 目录下的模板页面都会自动绑定上 test 目录下同名的 json 数据，同时还支持添加同名 jsp 脚本动态添加。\n\n1. test/page/index.json\n\n  ```json\n  {\n      \"title\": \"This will be override in index.jsp.\",\n      \"subtitle\": \"This is subtitle.\"\n  }\n  ```\n2. test/page/index.jsp\n\n  ```jsp\n  <%@ page import=\"org.apache.velocity.context.Context\" %><%\n\n      Context context = (Context)request.getAttribute(\"context\");\n\n\n      context.put(\"title\", \"Welcome to jello.\");\n  %>\n  ```\n3. page/index.vm\n\n  ```velocity\n  <h1>$title</h1>\n  <h2>$subtitle</h2>\n  ```\n4. 输出结果\n\n  ```html\n  <h1>Welcome to jello.</h1>\n  <h2>This is subtitle.</h2>\n  ```\n\n### 页面模拟\n\n通过创建 vm 文件可以创建页面，但是访问路径是固定的 ${项目名称}/page/${页面路径}，此路径与线上地址不一致怎么办？\n\n可以通过添加 `server.conf` 文件，如下面的栗子，当请求 /testpage 的时候，实际上渲染的是 example/page/testpage 页面\n\n```\nrewrite ^\\/testpage /example/page/testpage\n```\n\n处理 page  下的 vm 文件，还可重定向 test 的各种 json 文件和 jsp 文件。如\n\n```\nrewrite ^\\/ajaxHander /test/page/ajaxHandler.jsp\n\nrewrite ^\\/somejsonfile /test/page/data.json\n```\n\n`server.conf` 支持 rewrite, redirect 两种指令。\n\n\n\n### 插件说明\n基于 velocity 扩展了以下标签 (directive)。\n\n#### **html**\n\n  代替`<html>`标签，设置页面运行的前端框架，以及控制整体页面输出。\n\n  语法: `#html([$framework[, $attrs]])body #end`\n\n  ```velocity\n\n  #html(\"fis-site:static/js/mod.js\", \"lang\", \"zh\")\n  ...\n  body content.\n  ...\n  #end\n  ```\n\n  **输出**\n\n  ```html\n  <html lang=\"zh\">\n  ...\n  body content\n  ...\n  </html>\n  ```\n#### **head**\n\n  代替`<head>`标签，控制CSS资源加载输出。\n\n  语法: `#head([$attrs]) body #end`\n\n  ```velocity\n  #head()\n  <meta charset=\"utf-8\"/>\n  #end\n  ```\n#### **body**\n\n  代替`<body>`标签，控制JS资源加载输出。\n\n  语法: `#body([$attrs]) body #end`\n\n  ```velocity\n  #html(\"home:static/lib/mod.js\")\n    #head()\n    <meta charset=\"utf-8\"/>\n    #end\n\n    #body()\n        ...\n    #end\n  #end\n  ```\n#### **script**\n\n  代替`<script>`标签，收集使用JS组件的代码块，控制输出至页面底部。\n\n  语法: `#script([$attrs]) body #end`\n\n  ```velocity\n  #html(\"home:static/lib/mod.js\")\n    #head()\n    <meta charset=\"utf-8\"/>\n\n      ## 通过script插件收集加载组件化JS代码\n      #script()\n      require.async(\"home:static/ui/B/B.js\");\n\n      console.log('here');\n      #end\n    #end\n\n    #body()\n        ...\n    #end\n  #end\n  ```\n\n#### **style**\n\n  代替`<style>`标签，收集使用CSS组件的代码块，控制输出至页面头部。\n\n  语法: `#style([$attrs]) body #end`\n\n  ```velocity\n  #html(\"home:static/lib/mod.js\")\n    #head\n    <meta charset=\"utf-8\"/>\n\n      #style()\n      @import url(xxx.css);\n\n      body {\n          color: #fff;\n      }\n      #end\n    #end\n\n    #body\n        ...\n    #end\n  #end\n  ```\n\n#### **require**\n\n  通过静态资源管理框架加载静态资源。\n\n  语法: `#require( $uri )`\n\n  ```velocity\n  #html(\"home:static/lib/mod.js\")\n    #head()\n    <meta charset=\"utf-8\"/>\n\n      ## 通过script插件收集加载组件化JS代码\n      #script()\n      require.async(\"home:static/ui/B/B.js\");\n\n      console.log('here');\n      #end\n    #end\n\n    #body()\n      #require(\"home:static/index/index.css\")\n    #end\n  #end\n  ```\n#### **widget**\n\n 调用模板组件，渲染输出模板片段。\n\n 语法: `#widget( $uri )`\n\n ```velocity\n  #html(\"home:static/lib/mod.js\")\n    #head()\n    <meta charset=\"utf-8\"/>\n\n      ## 通过script插件收集加载组件化JS代码\n      #script()\n      require.async(\"home:static/ui/B/B.js\");\n\n      console.log('here');\n      #end\n    #end\n\n    #body()\n      #require(\"home:static/index/index.css\")\n      #widget(\"home:widget/A/A.tpl\")\n    #end\n  #end\n  ```\n#### **uri**\n\n  定位线上资源，允许跨模块(project)。\n\n 语法: `#uri( $uri )`\n\n ```velocity\n  #html(\"home:static/lib/mod.js\")\n    #head()\n    <meta charset=\"utf-8\"/>\n    #end\n\n    #body()\n        #uri(\"home:static/css/bootstrap.css\")\n    #end\n  #end\n  ```\n\n### 配置\n参考[fis配置](http://fis.baidu.com/)\n\n## 更多资料\n\n* [fis](https://github.com/fex-team/fis)\n* [fis-plus](https://github.com/fex-team/fis-plus)\n* [gois](https://github.com/xiangshouding/gois)\n* [spmx](https://github.com/fouber/spmx/)\n* [phiz](https://github.com/fouber/phiz/)\n",
+  "readmeFilename": "README.md",
+  "_id": "jello@0.0.13",
+  "_shasum": "a13bb0af229b5401f1bd844b1671928e62af4a3f",
+  "_from": "jello@",
+  "_resolved": "https://registry.npmjs.org/jello/-/jello-0.0.13.tgz"
+}
